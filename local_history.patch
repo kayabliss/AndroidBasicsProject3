@@ -1,0 +1,142 @@
+Index: app/src/main/java/com/caren/androidbasicsproject3/TaskItemAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/caren/androidbasicsproject3/TaskItemAdapter.kt b/app/src/main/java/com/caren/androidbasicsproject3/TaskItemAdapter.kt
+--- a/app/src/main/java/com/caren/androidbasicsproject3/TaskItemAdapter.kt	(date 1633393589639)
++++ b/app/src/main/java/com/caren/androidbasicsproject3/TaskItemAdapter.kt	(date 1633393589639)
+@@ -1,6 +1,5 @@
+ package com.caren.androidbasicsproject3
+ 
+-import android.graphics.Paint
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+@@ -8,76 +7,96 @@
+ import android.widget.EditText
+ import android.widget.TextView
+ import androidx.recyclerview.widget.RecyclerView
++import androidx.recyclerview.widget.RecyclerView.ViewHolder
+ import com.ana.androidbasicsproject3.R
+ import com.google.android.material.floatingactionbutton.FloatingActionButton
+ 
+ class TaskItemAdapter(private val tasks: MutableList<String>) :
+     RecyclerView.Adapter<TaskItemAdapter.ViewHolder>() {
+ 
+-    private lateinit var myListener : onItemClickListener
++    private lateinit var myListener: onItemClickListener
+ 
+     // Created a new Interface onItemclickListener
+-    interface onItemClickListener{
++    interface onItemClickListener {
+         fun onItemClick(index: Int)
+     }
+-    fun setOnItemClickListener(listener:onItemClickListener){
+-        myListener = listener // myListener is the local variable and listener will be passed as an arguement
++
++    fun setOnItemClickListener(listener: onItemClickListener) {
++        myListener =
++            listener // myListener is the local variable and listener will be passed as an arguement
+     }
+ 
+ 
+-    private fun toggleStrikeThrough(task: TextView, isChecked: Boolean) {// we are creating a function
+-        if(isChecked) {// if it's actually checked we want to strike thru text
+-            task.paintFlags = task.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+-        } else {
+-            task.paintFlags = task.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()// remove flag from paint flay
+-        }
+-    }
+-    fun deleteItems(index: Int){
+-        tasks.removeAt(index)
+-
+-        // ** need to have it removed at the selected index based on checkbox
+-        notifyDataSetChanged()
+-    }
+-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
++    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+         val inflater = LayoutInflater.from(parent.context)
+         val taskItemView = inflater.inflate(R.layout.item_task, parent, false)
+-        return ViewHolder(taskItemView, myListener)// need to have 2 parameters because we changed our viewholder so it can take a clicklistener
++        return RecyclerView.ViewHolder(taskItemView, myListener)// need to have 2 parameters because we changed our viewholder so it can take a clicklistener
+     }
+ 
+ 
+-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
++    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+         val task = tasks.get(position)// This gives us a reference to the Mutablelist called tasks, and we "get the (position)
+         holder.genericTextView.text = task.toString()
++
++       /* holder.itemView.setOnClickListener {
++            tasks.removeAt(position)
++            notifyDataSetChanged()
++            true
++        }
++
++        */
++
+     }
++
+ 
+     override fun getItemCount(): Int {
+         return tasks.size
+     }
+ 
+ 
+-    inner class ViewHolder(itemView: View, listener: TaskItemAdapter.onItemClickListener) : RecyclerView.ViewHolder(itemView) {
++    inner class ViewHolder(itemView: View, listener: TaskItemAdapter.onItemClickListener) :
++        RecyclerView.ViewHolder(itemView) {
+         // Specifically call each row of the item layout an itemView
+         val genericTextView = itemView.findViewById<TextView>(R.id.task)
+-        val checkItOff = itemView.findViewById<CheckBox>(R.id.checkbox)
++        var checkOff = itemView.findViewById<CheckBox>(R.id.checkbox)
+         val fabBtn = itemView.findViewById<FloatingActionButton>(R.id.fabAdd)
+         val fabBtnDel = itemView.findViewById<FloatingActionButton>(R.id.fabDelete)
+-       val editTx = itemView.findViewById<EditText>(R.id.taskEntry)
++        val editTx = itemView.findViewById<EditText>(R.id.taskEntry)
++
++
++
+         init {
+-        itemView.setOnClickListener {
+-            listener.onItemClick(adapterPosition)
+-
++            itemView.setOnClickListener {
++                listener.onItemClick(adapterPosition)
+             }
+ 
++      /*  checkOff.setOnCheckedChangeListener { buttonView, isChecked ->
++            // if it's checked then we will remove it
++            // will pass "task.remove
++            tasks.removeAt(adapterPosition)
++            notifyItemRemoved(adapterPosition)
++
++        } */
+ 
+-    }
++        }
+     }
+-
+ 
+ 
+-    fun addItem(newTaskAdd : Taskwritten){
++    fun addItem(newTaskAdd: Taskwritten) {
+         tasks.add(newTaskAdd.todoTask)
+         notifyDataSetChanged()
+ 
+     }
+-}
++
++
++    /*fun deleteItems(index: Int) {
++        tasks.removeIf {
++
++
++        tasks.removeAt(index)
++
++        // ** need to have it removed at the selected index based on checkbox
++        notifyDataSetChanged()*/
++    }
+ 
++
