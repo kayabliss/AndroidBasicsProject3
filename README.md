@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/kayabliss/AndroidBasicsProject3/blob/master/notpadlogo.jpg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">To do task</h3>
